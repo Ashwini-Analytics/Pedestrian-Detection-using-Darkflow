@@ -1,4 +1,14 @@
-## Intro
+## Pedestrian Detection
+   
+   I have used Caltech dataset for pedestrian detection. This dataset consists of approximately 10 hours of 640x480 30Hz video. About 250,000 frames with a total of 350,000 bounding boxes and 2300 unique pedestrians were annotated. For more informaton you can refer to [this](http://www.vision.caltech.edu/Image_Datasets/CaltechPedestrians/).
+   
+### For converting into darkflow format
+  
+  The video files in caltech Pedestrian dataset are in .seq and the annotations are in .vbb format. Darkflow needs the images in jpg and annotations in .xml format. To convert the files we have used:
+
+vbb2voc.py: extract images with person bbox in seq file and convert vbb annotation file to xml files. PS: For Caltech pedestrian dataset, there are 4 kind of persons: person, person-fa, person?, people. In my case, I just need to use person type data. If you want to use other types, specify person_types with corresponding type list (like ['person', 'people']) in vbb_anno2dict function.
+
+### Building the Model
 
 [![Build Status](https://travis-ci.org/thtrieu/darkflow.svg?branch=master)](https://travis-ci.org/thtrieu/darkflow) [![codecov](https://codecov.io/gh/thtrieu/darkflow/branch/master/graph/badge.svg)](https://codecov.io/gh/thtrieu/darkflow)
 
@@ -11,7 +21,7 @@ See demo below or see on [this imgur](http://i.imgur.com/EyZZKAA.gif)
 
 <p align="center"> <img src="demo.gif"/> </p>
 
-## Dependencies
+### Dependencies
 
 Python3, tensorflow 1.0, numpy, opencv 3.
 
@@ -34,7 +44,7 @@ You can choose _one_ of the following three ways to get started with darkflow.
     pip install .
     ```
 
-## Update
+### Update
 
 **Android demo on Tensorflow's** [here](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/android/src/org/tensorflow/demo/TensorFlowYoloDetector.java)
 
@@ -55,7 +65,7 @@ pottedplant
 
 And that's it. `darkflow` will take care of the rest. You can also set darkflow to load from a custom labels file with the `--labels` flag (i.e. `--labels myOtherLabelsFile.txt`). This can be helpful when working with multiple models with different sets of output labels. When this flag is not set, darkflow will load from `labels.txt` by default (unless you are using one of the recognized `.cfg` files designed for the COCO or VOC dataset - then the labels file will be ignored and the COCO or VOC labels will be loaded).
 
-## Design the net
+### Design the net
 
 Skip this if you are working with one of the original configurations since they are already there. Otherwise, see the following example:
 
@@ -78,7 +88,7 @@ activation = linear
 ...
 ```
 
-## Flowing the graph using `flow`
+### Flowing the graph using `flow`
 
 ```bash
 # Have a look at its options
@@ -121,7 +131,7 @@ JSON output:
  - topleft: pixel coordinate of top left corner of box.
  - bottomright: pixel coordinate of bottom right corner of box.
 
-## Training new model
+### Training new model
 
 Training is simple as you only have to add option `--train`. Training set and annotation will be parsed if this is the first time a new configuration is trained. To point to training set and annotations, use option `--dataset` and `--annotation`. A few examples:
 
@@ -216,7 +226,7 @@ flow --model cfg/yolo-new.cfg --train --dataset "~/VOCdevkit/VOC2007/JPEGImages"
     When darkflow sees you are loading `tiny-yolo-voc.weights` it will look for `tiny-yolo-voc.cfg` in your cfg/ folder and compare that configuration file to the new one you have set with `--model cfg/tiny-yolo-voc-3c.cfg`. In this case, every layer will have the same exact number of weights except for the last two, so it will load the weights into all layers up to the last two because they now contain different number of weights.
 
 
-## Camera/video file demo
+### Camera/video file demo
 
 For a demo that entirely runs on the CPU:
 
@@ -234,7 +244,7 @@ To use your webcam/camera, simply replace `videofile.avi` with keyword `camera`.
 
 To save a video with predicted bounding box, add `--saveVideo` option.
 
-## Using darkflow from another python application
+### Using darkflow from another python application
 
 Please note that `return_predict(img)` must take an `numpy.ndarray`. Your image must be loaded beforehand and passed to `return_predict(img)`. Passing the file path won't work.
 
@@ -254,7 +264,7 @@ print(result)
 ```
 
 
-## Save the built graph to a protobuf file (`.pb`)
+### Save the built graph to a protobuf file (`.pb`)
 
 ```bash
 ## Saving the lastest checkpoint to protobuf file
@@ -275,3 +285,7 @@ flow --pbLoad built_graph/yolo.pb --metaLoad built_graph/yolo.meta --imgdir samp
 If you'd like to load a `.pb` and `.meta` file when using `return_predict()` you can set the `"pbLoad"` and `"metaLoad"` options in place of the `"model"` and `"load"` options you would normally set.
 
 That's all.
+
+### Credits
+ 
+Credits for this code go to https://github.com/thtrieu and for vbb2voc.py go to https://github.com/CasiaFan/Dataset_to_VOC_converter . 
