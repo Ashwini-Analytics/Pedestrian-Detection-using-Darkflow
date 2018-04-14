@@ -288,4 +288,4 @@ That's all.
 
 ### Credits
  
-Credits for this code go to https://github.com/thtrieu and for vbb2voc.py go to https://github.com/CasiaFan/Dataset_to_VOC_converter . 
+Credit for this code goes to https://github.com/thtrieu and for vbb2voc.py goes to https://github.com/CasiaFan/Dataset_to_VOC_converter . 
